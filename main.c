@@ -1,7 +1,15 @@
 #include <stdio.h>
 #include "DynamicMemory.h"
 
-void memoryScenario_01(void) {
+void testScenario(){
+    printf("==========================================\n");
+    initStorageArr();
+    printf(" 빈 공간 리스트 \n");
+    printFreeList();
+    printf("==========================================\n");
+}
+
+void memoryScenario_01() {
     int a, b, c, d;
     a = myalloc(10);
     b = myalloc(20);
@@ -14,5 +22,6 @@ void memoryScenario_01(void) {
 }
 
 int main(){
+    testScenario();
     return 0;
 }

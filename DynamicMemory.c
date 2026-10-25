@@ -1,19 +1,12 @@
+#include <stdio.h>
 #include "DynamicMemory.h"
-
-#define SIZE 108
-
-typedef struct Header
-{
-    int size;
-    int next;
-} Header;
 
 char storageArr[SIZE];
 int head;
 
 void initStorageArr(){
     Header* pHeader = (Header*)&storageArr[0];
-    pHeader->size = SIZE - 8;
+    pHeader->size = SIZE - HEADER_SIZE;
     pHeader->next = -1;
     head = 0;
 }
@@ -42,8 +35,35 @@ int myalloc(int request_size) {
     pHeader = (Header*)&storageArr[ptr + request_size];
     pHeader->size = bsize - (request_size + 8);
     pHeader->next = -1;
+
+    return 0;
 }
 
 void myfree(int start_address) {
     
+}
+
+void printFreeList(){
+    printf(" 리스트 : ");
+    if(head == -1){
+        printf("(빈 공간 없음)\n");
+        return;
+    }
+
+    int h = head;
+    int count = 0;
+    while(h != -1){
+        Header* pHeader = (Header*)&storageArr[h];
+        if(count > 0 ){
+            printf(" -> ");
+        }
+        printf("[start: %d], size: %d, next: %d", h, pHeader->size, pHeader->next);
+        h = pHeader->next;
+
+        if(++count > SIZE / HEADER_SIZE){
+            printf("오류 발생");
+            break;
+        }
+    }
+    printf("\n");
 }
