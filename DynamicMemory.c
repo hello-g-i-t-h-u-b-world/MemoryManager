@@ -5,38 +5,37 @@ char storageArr[SIZE];
 int head;
 
 void initStorageArr(){
-    Header* pHeader = (Header*)&storageArr[0];
-    pHeader->size = SIZE - HEADER_SIZE;
-    pHeader->next = -1;
+    Header* pHead = (Header*)&storageArr[0];
+    pHead->size = SIZE - HEADER_SIZE;
+    pHead->next = -1;
     head = 0;
 }
 
 int myalloc(int request_size) {
-    if ((SIZE - 8) < request_size) {
+    if (request_size <= 0 || request_size > SIZE - HEADER_SIZE) {
         return -1; // 최대 용량 초과
     }
 
-    int ptr, bsize;
+    int prev = -1;
+    int h = head;
 
-    Header* pHeader = (Header*)&storageArr[head];
+    Header* phead = NULL; 
     
-    // next가 존재 시 next로 이동
-    if (pHeader->next != -1) {
-        head = pHeader->next;
-        pHeader = (Header*)&storageArr[head];
+    // 빈 공간 찾기
+    while (h != -1){
+        phead = (Header*)&storageArr[h];
+        if(phead->size >= request_size){
+            break;
+        }
+        prev = h;
+        h = phead->next;
     }
 
-    bsize = pHeader->size;
-    pHeader->size = request_size;
-    pHeader->next = -1;
-    ptr = head + 8;
+    if(h == -1){
+        return -1;
+    }
 
-    // 빈 공간 생성
-    pHeader = (Header*)&storageArr[ptr + request_size];
-    pHeader->size = bsize - (request_size + 8);
-    pHeader->next = -1;
-
-    return 0;
+    return h + HEADER_SIZE;
 }
 
 void myfree(int start_address) {
@@ -53,12 +52,12 @@ void printFreeList(){
     int h = head;
     int count = 0;
     while(h != -1){
-        Header* pHeader = (Header*)&storageArr[h];
+        Header* pHead = (Header*)&storageArr[h];
         if(count > 0 ){
             printf(" -> ");
         }
-        printf("[start: %d], size: %d, next: %d", h, pHeader->size, pHeader->next);
-        h = pHeader->next;
+        printf("[start: %d, size: %d, next: %d]", h, pHead->size, pHead->next);
+        h = pHead->next;
 
         if(++count > SIZE / HEADER_SIZE){
             printf("오류 발생");
