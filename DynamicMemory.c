@@ -19,7 +19,7 @@ int myalloc(int request_size) {
     int prev = -1;
     int h = head;
 
-    Header* phead = NULL; 
+    Header* phead = NULL;
     
     // 빈 공간 찾기
     while (h != -1){
@@ -33,6 +33,26 @@ int myalloc(int request_size) {
 
     if(h == -1){
         return -1;
+    }
+
+    //남은 공간에 빈 블럭 생성
+    int remain = phead->size - request_size;
+    int emptyBlock = h + HEADER_SIZE + request_size;
+    
+    Header* pEmptyBlock = (Header*)&storageArr[emptyBlock];
+
+    pEmptyBlock->size = remain - HEADER_SIZE;
+    pEmptyBlock->next = phead->next;
+    phead->size = request_size;
+    phead->next = -1;
+
+    // 리스트 연결
+    if(prev == -1){
+        head = emptyBlock;
+    } 
+    else {
+        Header* pPrev = (Header*)&storageArr[prev];
+        pPrev->next = emptyBlock;
     }
 
     return h + HEADER_SIZE;
