@@ -8,19 +8,34 @@ void testScenario(){
     printFreeList();
     printf("==========================================\n");
 
-    Header* pA = (Header*)&storageArr[0];
-    pA->size = 10;
-    pA->next = 30;
-    Header* pB = (Header*)&storageArr[30];
-    pB->size = 70;
-    pB->next = -1;
-    head = 0;
-    printFreeList();
-
-    printf("==========================================\n");
-    printf("  myalloc(5)   = %d\n", myalloc(5));
+    printf("분할 \n");
     printf("  myalloc(10)  = %d\n", myalloc(10));
+    printFreeList();
     printf("  myalloc(20)  = %d\n", myalloc(20));
+    printFreeList();
+    printf("  myalloc(10)  = %d\n", myalloc(10));
+    printFreeList();
+    printf("  (기대: [64, 36, -1])\n");
+    printf("------------------------------------------\n");
+    
+    printf("빈 공간 부족으로 할당에 실패\n");
+    printf("  myalloc(50)  = %d\n", myalloc(50));
+    printFreeList();
+    printf("------------------------------------------\n");
+
+    printf("남은 공간이 헤더 크기(8)보다 작을 때\n");
+    printf("  myalloc(30)  = %d\n", myalloc(30));
+    printFreeList();
+    printf("------------------------------------------\n");
+
+    printf("myfree\n");
+    myfree(72);
+    printf("  myfree(72)\n");
+    printFreeList();
+    myfree(8);
+    printf("  myfree(8)\n");
+    printFreeList();
+    printf("------------------------------------------\n");
 }
 
 void memoryScenario_01() {

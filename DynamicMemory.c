@@ -41,9 +41,15 @@ int myalloc(int request_size) {
     
     Header* pEmptyBlock = (Header*)&storageArr[emptyBlock];
 
-    pEmptyBlock->size = remain - HEADER_SIZE;
-    pEmptyBlock->next = phead->next;
-    phead->size = request_size;
+    if(remain > HEADER_SIZE){
+        pEmptyBlock->size = remain - HEADER_SIZE;
+        pEmptyBlock->next = phead->next;
+        phead->size = request_size;
+    }
+    else {
+        // 남은 공간이 부족하면 블럭 전체 할당: 다음 빈 블럭을 연결
+        emptyBlock = phead->next;
+    }
     phead->next = -1;
 
     // 리스트 연결
@@ -59,7 +65,12 @@ int myalloc(int request_size) {
 }
 
 void myfree(int start_address) {
-    
+    int h = start_address - HEADER_SIZE;
+    Header* phead = (Header*)&storageArr[h];
+
+    // 리스트 맨 앞으로
+    phead->next = head;
+    head = h;
 }
 
 void printFreeList(){
