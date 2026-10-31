@@ -68,6 +68,17 @@ void myfree(int start_address) {
     int h = start_address - HEADER_SIZE;
     Header* phead = (Header*)&storageArr[h];
 
+    // 끝 주소가 h인 빈 블럭이 h를 흡수
+    int cur = head;
+    while(cur != -1){
+        Header* pCur = (Header*)&storageArr[cur];
+        if(cur + HEADER_SIZE + pCur->size == h){
+            pCur->size += HEADER_SIZE + phead->size;
+            return;
+        }
+        cur = pCur->next;
+    }
+
     // 리스트 맨 앞으로
     phead->next = head;
     head = h;

@@ -36,6 +36,24 @@ void testScenario(){
     printf("  myfree(8)\n");
     printFreeList();
     printf("------------------------------------------\n");
+
+    printf("병합 테스트\n");
+    initStorageArr();
+
+    int a, b, c;
+    a = myalloc(10);
+    b = myalloc(10);
+    c = myalloc(10);
+    printFreeList();
+    printf("myfree (a)\n");
+    myfree(a);
+    printFreeList();
+    printf("  (예상 결과값: [0, 10, 54] -> [54, 46, -1])\n");
+    printf("myfree (b)\n");
+    myfree(b);
+    printFreeList();
+    printf("  (예상 결과값: [0, 28, 54] -> [54, 46, -1])\n");
+    printf("------------------------------------------\n");
 }
 
 void memoryScenario_01() {
