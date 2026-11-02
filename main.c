@@ -1,6 +1,131 @@
 #include <stdio.h>
 #include "DynamicMemory.h"
 
+void memoryScenario_01(){
+    int a, b, c, d;
+
+    printf("==========================================\n");
+    printf("시나리오 1: 문제지 예제 (SIZE = 108)\n");
+    printf("==========================================\n");
+    initStorageArr();
+    printf("[초기] 빈 공간 리스트\n");
+    printFreeList();
+    printf("------------------------------------------\n");
+
+    printf("(1) a = myalloc(10)\n");
+    a = myalloc(10);
+    if(a != -1){
+        printf("  결과 : 성공, 주소 : %d\n", a);
+    }
+    printFreeList();
+    printf("------------------------------------------\n");
+
+    printf("(2) b = myalloc(20)\n");
+    b = myalloc(20);
+    if(b != -1){
+        printf("  결과 : 성공, 주소 : %d\n", b);
+    }
+    printFreeList();
+    printf("------------------------------------------\n");
+
+    printf("(3) c = myalloc(10)\n");
+    c = myalloc(10);
+    if(c != -1){
+        printf("  결과 : 성공, 주소 : %d\n", c);
+    }
+    printFreeList();
+    printf("------------------------------------------\n");
+
+    printf("(4) myfree(a)\n");
+    myfree(a);
+    printFreeList();
+    printf("------------------------------------------\n");
+
+    printf("(5) a = myalloc(30)\n");
+    a = myalloc(30);
+    if(a != -1){
+        printf("  결과 : 성공, 주소 : %d\n", a);
+    }
+    printFreeList();
+    printf("------------------------------------------\n");
+
+    printf("(6) myfree(c)\n");
+    myfree(c);
+    printFreeList();
+    printf("------------------------------------------\n");
+
+    printf("(7) d = myalloc(20)\n");
+    d = myalloc(20);
+    if(d != -1){
+        printf("  결과 : 성공, 주소 : %d\n", d);
+    }
+    printFreeList();
+    printf("------------------------------------------\n");
+
+    printf("(8) myfree(b)\n");
+    myfree(b);
+    printFreeList();
+    printf("==========================================\n\n");
+}
+
+void memoryScenario_02(){
+    int a, b, c, d;
+
+    printf("==========================================\n");
+    printf("시나리오 2: 전체 할당 후 추가 요청\n");
+    printf("==========================================\n");
+    initStorageArr();
+    printf("[초기] 빈 공간 리스트\n");
+    printFreeList();
+    printf("------------------------------------------\n");
+
+    printf("(1) a = myalloc(100)\n");
+    a = myalloc(100);
+    if(a != -1){
+        printf("  결과 : 성공, 주소 : %d\n", a);
+    }
+    printFreeList();
+    printf("------------------------------------------\n");
+
+    printf("(2) b = myalloc(1)\n");
+    b = myalloc(1);
+    if(b != -1){
+        printf("  결과 : 성공, 주소 : %d\n", b);
+    }
+    printFreeList();
+    printf("==========================================\n\n");
+}
+
+void memoryScenario_03(){
+    int a, b, c, d;
+
+    printf("==========================================\n");
+    printf("시나리오 3: 같은 주소 두 번 반환\n");
+    printf("==========================================\n");
+    initStorageArr();
+    printf("[초기] 빈 공간 리스트\n");
+    printFreeList();
+    printf("------------------------------------------\n");
+
+    printf("(1) a = myalloc(100)\n");
+    a = myalloc(100);
+    if(a != -1){
+        printf("  결과 : 성공, 주소 : %d\n", a);
+    }
+    printFreeList();
+    printf("------------------------------------------\n");
+
+    printf("(2) myfree(a)\n");
+    myfree(a);
+    printFreeList();
+    printf("------------------------------------------\n");
+
+    printf("(3) myfree(a)\n");
+    myfree(a);
+    printFreeList();
+    printf("==========================================\n\n");
+}
+
 void testScenario(){
     printf("==========================================\n");
     initStorageArr();
@@ -144,20 +269,11 @@ void exceptionTest(){
     printf("------------------------------------------\n");
 }
 
-void memoryScenario_01(){
-    int a, b, c, d;
-    a = myalloc(10);
-    b = myalloc(20);
-    c = myalloc(10);
-    myfree(a);
-    a = myalloc(30);
-    myfree(c);
-    d = myalloc(20);
-    myfree(b);
-}
-
 int main(){
+    memoryScenario_01();
+    memoryScenario_02();
+    memoryScenario_03();
     // testScenario();
-    exceptionTest();
+    // exceptionTest();
     return 0;
 }
